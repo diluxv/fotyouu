@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Daniela</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        
+    <div id="entrada">
+        <h1>Para vocé</h1>
+        <button id="btnEntrar">Entrar</button>
+    </div>
+
+    <video id="fondo" muted loop playsinline poster="portada.jpg">
+        <source src="video/video.mp4" type="video/mp4">
+    </video>
+
+    <div class="velo"></div>
+
+    <main id="letra" aria-live="polite"><p id="linea"></p></main>
+
+    <div id="reproductor">
+        <audio id="audio" controls src="audio/audio.mp3"></audio>
+    </div>
+
+    <script>
+        const letra = [
+            { tiempo: 6, texto: "Tu forma de mirarme, tan ligera" },
+            { tiempo: 9, texto: "Hasta el alma te pide que te quedes" },
+            { tiempo: 12, texto: "Y engrandece, el cuerpo se calienta" },
+            { tiempo: 16, texto: "Sin importar la hora ni el lugar" },
+            { tiempo: 18, texto: "Tú y yo en alta mar" },
+            { tiempo: 21, texto: "Meciéndonos, flotando" },
+            { tiempo: 24, texto: "Me está gustando" },
+            { tiempo: 27, texto: "No quiero escatimar tus besos..." },
+            { tiempo: 33, texto: "Prefiero lanzarme de cabeza" },
+            { tiempo: 36, texto: "Sin necesidad de fingir" },
+            { tiempo: 39, texto: "Corazón" },
+            { tiempo: 42, texto: "Mi intuición" },
+            { tiempo: 45, texto: "Me dice que es verdad" },
+            { tiempo: 48, texto: "La probabilidad de que sea bueno" },
+            { tiempo: 50, texto: "Corazón" },
+            { tiempo: 53, texto: "Mi intuición" },
+            { tiempo: 55, texto: "Me dice que es verdad" },
+            { tiempo: 58, texto: "La probabilidad de que sea bueno" },
+            { tiempo: 62, texto: "Y no quiero nada, nada (no, no, no)" },
+            { tiempo: 65, texto: "Más que estar bien contigo" },
+            { tiempo: 68, texto: "Más que verte florecer" },
+            { tiempo: 71, texto: "En el jardín de la vida" },
+            { tiempo: 75, texto: "corazón"},
+            { tiempo: 78, texto: "Quiero que me lleves contigo" },
+            { tiempo: 81, texto: "Con mi alma, incluso puedes quedarte" },
+            { tiempo: 84, texto: "Sin estrés, simplemente sucede" },
+            { tiempo: 87, texto: "Al final, solo hay que dejar que fluya (deja que fluya)" },
+            { tiempo: 90, texto: "Tú y yo en alta mar" },
+            { tiempo: 93, texto: "Una escena de película, algo de cine" },
+            { tiempo: 96, texto: "Tú a mi lado" },
+            { tiempo: 99, texto: "No quiero escatimar tus besos" },
+            { tiempo: 103, texto: "Prefiero lanzarme de cabeza" },
+            { tiempo: 106, texto: "Sin necesidad de fingir" },
+            { tiempo: 108, texto: "Corazón" },
+            { tiempo: 110, texto: "Mi intuición" },
+            { tiempo: 112, texto: "Me dice que es verdad" },
+            { tiempo: 114, texto: "La probabilidad de que sea bueno" },
+            { tiempo: 117, texto: "Corazón" },
+            { tiempo: 119, texto: "Mi intuición" },
+            { tiempo: 121, texto: "Me dice que es verdad" },
+            { tiempo: 125, texto: "La probabilidad de que sea bueno, sí" },
+            { tiempo: 128, texto: "Y no quiero nada, nada (nada, nada, no)" },
+            { tiempo: 131, texto: "Más que estar bien contigo" },
+            { tiempo: 134, texto: "Más que verte florecer" },
+            { tiempo: 137, texto: "En el jardín de la vida (oh, sí)" },
+            { tiempo: 140, texto: "♪" },
+            { tiempo: 143, texto: "Corazón (¡wow!)" },
+            { tiempo: 146, texto: "Y no quiero nada, nada" },
+            { tiempo: 149, texto: "Más que estar bien contigo" },
+            { tiempo: 151, texto: "Y no quiero nada, nada, no" },
+            { tiempo: 154, texto: "Más que estar bien contigo" },
+            { tiempo: 157, texto: "Y no quiero nada, nada" },
+            { tiempo: 160, texto: "Más que estar bien contigo" },
+            { tiempo: 163, texto: "Más que verte florecer" },
+            { tiempo: 166, texto: "En el jardín de la vida" },
+            { tiempo: 169, texto: "Uh-uh-uh" },
+            { tiempo: 170, texto: "Uh-uh-uh-uh-uh" },
+            { tiempo: 171, texto: "Te amo Daniela <333"}
+        ];
+
+        const audio = document.getElementById("audio");
+        const video = document.getElementById("fondo");
+        const lineaEl = document.getElementById("linea");
+        const entrada = document.getElementById("entrada");
+
+        let actual = -2;
+        function actualizar() {
+            const t = audio.currentTime;
+            let idx = -1;
+            for (let i = 0; i < letra.length; i++) {
+            if (t >= letra[i].tiempo) idx = i; else break;
+            }
+
+            if (idx >= 0 && letra[idx].fin !== undefined && t >= letra[idx].fin) idx = -1;
+
+            if (idx === actual) return;
+            actual = idx;
+
+            lineaEl.classList.remove("visible");
+            setTimeout(() => {
+            if (actual === idx && idx >= 0) {
+                lineaEl.textContent = letra[idx].texto;
+                lineaEl.classList.add("visible");
+            }
+            }, 250);
+        }
+        audio.addEventListener("timeupdate", actualizar);
+        audio.addEventListener("seeked", actualizar);
+
+        function iniciar() {
+            audio.currentTime = 0;
+            video.currentTime = 0;
+            audio.play();
+            video.play();
+            entrada.classList.add("oculta");
+        }
+        document.getElementById("btnEntrar").addEventListener("click", iniciar);
+
+        audio.addEventListener("pause", () => video.pause());
+        audio.addEventListener("play", () => video.play());
+    </script>
+</body>
+</html>
